@@ -17,3 +17,6 @@ class GraphicEntry(object):
         # Get the other attributes we have
         for key, val in inigroup.items():
             self.__setattr__(key, val)
+
+if __name__ == "__main__":
+	pass

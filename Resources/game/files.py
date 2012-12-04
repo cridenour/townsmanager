@@ -69,3 +69,8 @@ class GameFiles(object):
 
 
             return entries
+
+
+if __name__ == "__main__":
+	files = GameFiles()
+	print files.find_directory() 
