@@ -1,0 +1,50 @@
+<div class="row">
+<div class="span10 homeactions">
+    <ul class="thumbnails">
+
+        <li>
+            <div class="thumbnail homeaction" id="play" ng-click="playGame()">
+
+                <p>Play Towns</p>
+
+            </div>
+        </li>
+
+        <li>
+            <div class="thumbnail homeaction" id="edit">
+
+                <a href="#/campaigns">Edit your campaigns</a>
+
+            </div>
+        </li>
+
+        <li>
+            <div class="thumbnail homeaction" id="coming">
+
+
+
+            </div>
+        </li>
+
+        <li>
+            <div class="thumbnail homeaction" id="soon">
+                <a ng-click="needFolder=true">Check</a>
+            </div>
+        </li>
+    </ul>
+
+    <div ui-modal class="fade modal" ng-model="needFolder" id="findFilesModal">
+        <div class="modal-header">
+            Uh oh!
+        </div>
+        <div class="modal-body">
+            We can't seem to find the Towns folder. Mind finding it for us?
+        </div>
+        <div class="modal-footer">
+            <button class="btn" ng-click="changeFolder()">Find Folder</button>
+        </div>
+    </div>
+
+</div>
+</div>
+

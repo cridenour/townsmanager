@@ -19,4 +19,16 @@ class GraphicEntry(object):
             self.__setattr__(key, val)
 
 if __name__ == "__main__":
-	pass
+	from files import GameFiles
+	files = GameFiles()
+        object = files.parse_ini('graphics.ini')
+        grass = GraphicEntry('grass_SEW', object.get('grass_SEW'))
+	print {
+		'NAME': grass.NAME,
+		'TILE_X': grass.TILE_X,
+		'TILE_Y': grass.TILE_Y,
+		'TILE_HEIGHT': grass.TILE_HEIGHT,
+		'TILE_WIDTH': grass.TILE_WIDTH,
+		'COLOR_MINIMAP': grass.COLOR_MINIMAP,
+		'TEXTURE_FILE': grass.TEXTURE_FILE
+	}

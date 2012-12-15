@@ -1,0 +1,41 @@
+/** Stop our window from horizontal scrolling **/
+.container { overflow-x: hidden; width: 780px; padding: 10px; }
+
+/** Campaigns styles **/
+.campaigns { position: relative; }
+.campaigns .add { position: absolute; top: 10px; right: 30px;}
+.campaigns .thumbnails { margin: 20px 0 0 20px; }
+.campaigns .thumbnail { background: #FFFFFF; position: relative; }
+.campaigns .thumbnail .icons { position: absolute; top: 10px; right: 10px;}
+.campaigns .thumbnail.deleted { opacity: 0.1; border-color: #da4f49; }
+.mission-placeholder { background: #da4f49; width: 220px; height: 100px; border-radius:4px; }
+.mission-form-label { margin: 6px 0; }
+.mission-form { margin-top: 12px; }
+
+/** Generic helpers for the app **/
+.form-input-label { font-weight: bold; }
+.alert { margin-left: -5px; }
+
+/** Home page styles **/
+.homeaction { width: 370px; height: 240px; position: relative; background-color: #c0c0c0; }
+.homeactions { height: 520px; overflow: hidden;}
+
+.homeactions #play:hover {
+    background-color: #da4f49;
+}
+
+.homeactions #play p {
+    color: #fff;
+    font-size: 36px;
+    position: relative;
+    top: 130px;
+    text-align: center;
+}
+
+.homeactions #play p {
+    color: #fff;
+    font-size: 36px;
+    position: relative;
+    top: 130px;
+    text-align: center;
+}

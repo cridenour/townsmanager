@@ -1,0 +1,145 @@
+<div class="page-header">
+    <h1>Campaign Editor <small>Manage save games.</small></h1>
+</div>
+
+
+
+<div class="row">
+    <div class="span10">
+        <div class="alert alert-success" ng-show="saved">
+            <strong>Saved!</strong> Your campaign file was saved to {{ filename }}.
+            <button type="button" class="close" ng-click="saved=false">&times;</button>
+        </div>
+    </div>
+</div>
+<div class="row">
+<div class="span10 campaigns">
+
+    <i class="icon-plus add" ng-click="campaign.missions.push(
+        {
+            isNew:true,
+            name:'New mission',
+            baseType:'normal',
+            nameES:'',
+            id: 'new' + ((campaign.missions|filter:{isNew:true}).length + 1)
+        }
+    )" title="Add new mission" ui-jq="tooltip"></i>
+    <p>Currently editing the {{ campaign.name }} campaign. <small>(<a title="Coming soon!" ui-jq="tooltip">Change</a>)</small></p>
+
+    <ul ui-sortable="sortableOptions" ng-model="campaign.missions" class="thumbnails">
+        <li class="span3" ng-repeat="mission in campaign.missions">
+            <div class="thumbnail" ng-class="{deleted: mission.isDeleted}">
+                <div class="icons">
+                    <i class="icon-exclamation-sign" ui-jq="tooltip" title="The mission folder is empty or missing."
+                       ui-if="!mission._files.length && !mission.isNew"></i>
+                    <i class="icon-wrench" ng-click="mission.modalVisible=true" ui-jq="tooltip"
+                       title="Edit"></i>
+                    <i class="icon-trash" ui-jq="tooltip" title="Delete" ui-if="mission.baseType != null"
+                       ng-click="mission.isDeleted=!mission.isDeleted"></i>
+                    <i class="icon-list handle" ui-jq="tooltip" title="Reorder"></i>
+                </div>
+
+                <h4>{{ mission.name }}</h4>
+
+                <!-- I hate how I'm doing this paragraph right now. -->
+                <p>This is a
+                    <span class="label" ui-if="mission.baseType == null" ui-jq="tooltip"
+                          title="This mission is default to Towns.">Default</span>
+                    <span class="label label-important" ui-if="mission.baseType == 'normal'" ui-jq="tooltip"
+                          title="This mission is based on the Normal map.">Normal</span>
+                    <span class="label label-inverse" ui-if="mission.baseType == 'mixed'" ui-jq="tooltip"
+                          title="This mission is based on the Mixed map.">Mixed</span>
+                    <span class="label label-warning" ui-if="mission.baseType == 'desert'" ui-jq="tooltip"
+                          title="This mission is based on the Desert map.">Desert</span>
+                    <span class="label label-success" ui-if="mission.baseType == 'jungle'" ui-jq="tooltip"
+                          title="This mission is based on the Jungle map.">Jungle</span>
+                    <span class="label label-info" ui-if="mission.baseType == 'snow'" ui-jq="tooltip"
+                          title="This mission is based on the Snow map.">Snow</span>
+                    map located in the {{ mission.id }} folder.
+                </p>
+
+                <div ui-modal class="fade modal" ng-model="mission.modalVisible" id="mission-edit-{{ mission.id }}">
+                    <div class="modal-header">
+                        <h3>{{mission.name}}</h3>
+                    </div>
+                    <div class="modal-body">
+                        <em ng-show="mission.baseType == null">Note: You are editing a default mission. Some options are disabled.</em>
+                        <div class="form-horizontal mission-form">
+                            <ng-form name="missionForm">
+
+                                <div class="control-group">
+                                    <label class="control-label form-input-label">Mission Name</label>
+                                    <div class="controls">
+                                        <input name="missionName" type="text" ng-model="mission.name" ng-required
+                                            class="input-medium" />
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label form-input-label">Spanish Name</label>
+                                    <div class="controls">
+                                        <input name="missionNameES" type="text" ng-model="mission.nameES" ng-required
+                                               class="" />
+                                    </div>
+                                </div>
+
+                                <div class="control-group" ng-class="{error: missionForm.missionId.$invalid}">
+                                    <label class="control-label form-input-label">Mission ID</label>
+                                    <div class="controls">
+                                        <input name="missionId" type="text" ng-model="mission.id"
+                                               ng-required ng-disabled="mission.baseType == null"
+                                               ui-validate="{unique: uniqueMissionId}"
+                                               ng-class="" />
+                                        <span class="help-block">No spaces or special characters.</span>
+                                        <span ng-show="missionForm.missionId.$error.unique"
+                                              class="label label-important mission-form-label">
+                                            This field must be unique.
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label form-input-label">Mission Name</label>
+                                    <div class="controls">
+                                        <select name="missionBaseType" ng-model="mission.baseType"
+                                                ng-options="m.id as m.name for m in defaultMissions"
+                                                ng-disabled="mission.baseType == null">
+                                            <option value="" ui-if="mission.baseType == null">Default map</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </ng-form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" ng-click="mission.modalVisible=false">Close</button>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+
+    <div class="btn-navbar pull-right">
+        <button class="btn" ng-click="resetCampaign()">Reset Changes</button>
+        <button class="btn btn-primary"  ng-click="saveMissions()"
+                ng-class="{'btn-danger': (campaign.missions|filter:{isDeleted:true}).length }">Save Missions</button>
+    </div>
+
+    <!-- Our confirmation modal -->
+    <div ui-modal class="fade modal" ng-model="saveConfirmationModalVisible" id="saveConfirmation">
+        <div class="modal-header">
+            <h3>Are you sure you want to save?</h3>
+        </div>
+        <div class="modal-body">
+            We have detected you have deleted a mission. Saving now will delete these folders.
+        </div>
+        <div class="modal-footer">
+            <button class="btn" ng-click="saveConfirmationModalVisible=false">On second thought...</button>
+            <button class="btn btn-danger" ng-click="saveMissions(true)">Yep, go ahead.</button>
+        </div>
+    </div>
+
+</div>
+</div>
