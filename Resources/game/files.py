@@ -15,15 +15,28 @@ class GameFiles(object):
 
     GAME_DIR = None
 
+    # A few generic locations the directory might be in.
+    USUAL_LOCATIONS = [
+        '~/Library/Application Support/Steam/SteamApps/common/towns',
+        'C:/Program Files (x86)/Steam/steamapps/common/towns',
+        'C:/Program Files/Steam/steamapps/commmon/towns',
+        '/Applications/towns'
+    ]
+
     def find_directory(self):
         """
         Return the absolute path to the directory
         """
         if self.GAME_DIR is None:
-            # TODO: Find the directory or ask for input
-            return False
+            for loc in self.USUAL_LOCATIONS:
+                if os.path.exists(os.path.expanduser(loc)):
+                    self.GAME_DIR = os.path.abspath(os.path.expanduser(loc))
 
-        return os.path.abspath(self.GAME_DIR)
+        # If we still don't find it, set it to false so our UI can prompt
+        if self.GAME_DIR is None:
+            self.GAME_DIR = False
+
+        return self.GAME_DIR
 
     def launch_towns(self):
         """

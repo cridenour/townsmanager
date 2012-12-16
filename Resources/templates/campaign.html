@@ -99,11 +99,11 @@
                                 </div>
 
                                 <div class="control-group">
-                                    <label class="control-label form-input-label">Mission Name</label>
+                                    <label class="control-label form-input-label">Copied From</label>
                                     <div class="controls">
                                         <select name="missionBaseType" ng-model="mission.baseType"
                                                 ng-options="m.id as m.name for m in defaultMissions"
-                                                ng-disabled="mission.baseType == null">
+                                                ng-disabled="!mission.isNew">
                                             <option value="" ui-if="mission.baseType == null">Default map</option>
                                         </select>
                                     </div>

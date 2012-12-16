@@ -90,7 +90,7 @@ class CampaignManager(object):
         self._files.indent_xml(new_c1, 1)
         campaign_xml.insert(0, new_c1)
 
-        self._files.save_xml('data/campaigns-new.xml', campaign_xml)
+        self._files.save_xml('data/campaigns.xml', campaign_xml)
 
 
 class Campaign(object):

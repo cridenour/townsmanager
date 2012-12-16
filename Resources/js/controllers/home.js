@@ -2,6 +2,11 @@ function HomeViewController($scope) {
 
     $scope.files = window.editor.files;
 
+
+    setTimeout(function () {
+        $scope.needFolder = $scope.files.find_directory() === false
+    }, 1000)
+
     $scope.changeFolder = function() {
         Ti.UI.openFolderChooserDialog(
             function(folders) {
@@ -23,6 +28,4 @@ function HomeViewController($scope) {
     $scope.playGame = function () {
         window.editor.playGame()
     }
-
-
 }
