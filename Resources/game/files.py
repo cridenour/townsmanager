@@ -20,7 +20,8 @@ class GameFiles(object):
         '~/Library/Application Support/Steam/SteamApps/common/towns',
         'C:/Program Files (x86)/Steam/steamapps/common/towns',
         'C:/Program Files/Steam/steamapps/commmon/towns',
-        '/Applications/towns'
+        '/Applications/Towns',
+	'~/Applications/Towns'
     ]
 
     def find_directory(self):
@@ -44,11 +45,14 @@ class GameFiles(object):
         """
         osx = os.path.join(self.find_directory(), 'towns.command')
         win = os.path.join(self.find_directory(), 'Towns.exe')
+        linux = os.path.join(self.find_directory(), 'towns.sh')
 
         if os.path.exists(win):
             subprocess.Popen('"' + win + '"', cwd=self.find_directory(), shell=True)
         elif os.path.exists(osx):
             subprocess.Popen('"' + osx + '"', cwd=self.find_directory(), shell=True)
+	elif os.path.exists(linux):
+	    subprocess.Popen('"' + linux + '"', cwd=self.find_directory(), shell=True)
 
     def list_directory(self, dir=None):
         """
